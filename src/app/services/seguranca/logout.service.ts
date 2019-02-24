@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MoneyHttp } from './money-http';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +10,15 @@ import { Router } from '@angular/router';
 export class LogoutService {
 
   constructor(private http: MoneyHttp,
-              private router: Router) { }
+              private router: Router,
+              private auth: AuthService) { }
 
-  URL = 'http://localhost:8080/token/revoke';
+  URL = environment.WebServiceList.URLLogout;
 
   logout() {
-    this.http.delete(this.URL).toPromise()
+    this.http.delete(this.URL, { withCredentials: true }).toPromise()
       .then(() => {
+        this.auth.clearToken();
         this.router.navigate(['/auth']);
       })
       .catch(() => null);

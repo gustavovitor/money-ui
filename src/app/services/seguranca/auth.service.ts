@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { UsuarioLogin } from "../../core/model";
-import { JwtHelperService } from "@auth0/angular-jwt";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UsuarioLogin } from '../../core/model';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoadingService } from '../util/loading.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  URL = 'http://localhost:8080/oauth/token';
+  URL = environment.WebServiceList.URLAuth;
 
   jwtPayload: any;
 
@@ -22,7 +23,7 @@ export class AuthService {
   login(user: UsuarioLogin): Promise<void> {
     this.loading.show();
     let headers = new HttpHeaders();
-    headers = headers.append('Authorization', 'Basic YW5ndWxhcjpAbmd1bGFyMA==');
+    headers = headers.append('Authorization', 'Basic b2F1dGgyLWNsaWVudC1hcGk6KlkqJWJYUSM8NSxwfltWazliYiYmWDlyc3c3Vn5KYF8=');
     headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
     const body = `username=${user.email}&password=${user.senha}&grant_type=password`;
@@ -46,7 +47,7 @@ export class AuthService {
   obterNovoAccessToken(): Promise<void> {
     this.loading.show();
     let headers = new HttpHeaders();
-    headers = headers.append('Authorization', 'Basic YW5ndWxhcjpAbmd1bGFyMA==');
+    headers = headers.append('Authorization', 'Basic b2F1dGgyLWNsaWVudC1hcGk6KlkqJWJYUSM8NSxwfltWazliYiYmWDlyc3c3Vn5KYF8=');
     headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
     const body = 'grant_type=refresh_token';
@@ -79,6 +80,11 @@ export class AuthService {
       }
     }
     return false;
+  }
+
+  public clearToken() {
+    localStorage.removeItem('access_token');
+    this.jwtPayload = null;
   }
 
   private armazenarToken(token: string) {

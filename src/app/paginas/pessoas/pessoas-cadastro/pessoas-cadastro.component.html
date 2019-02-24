@@ -62,7 +62,7 @@
 
     <div class="ui-g-12">
       <button type="submit" label="Salvar" pButton [disabled]="!novapessoa.valid"></button>
-      <button type="submit" [label]="editando ? 'Nova' : 'Limpar'" pButton (click)="editando ? novo() : limpar(novolancamento)" class="ui-button-secondary" style="margin-left: 12px;"></button>
+      <button type="submit" [label]="editando ? 'Nova' : 'Limpar'" pButton (click)="editando ? novo() : limpar(novapessoa)" class="ui-button-secondary" style="margin-left: 12px;"></button>
       <a routerLink="/pessoas"><i style="margin-left: 12px;" pTooltip="Voltar para a pesquisa.." tooltipPosition="top" class="fa fa-arrow-left"></i></a>
     </div>
 

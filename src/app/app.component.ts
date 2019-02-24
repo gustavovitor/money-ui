@@ -13,7 +13,7 @@ import { LoadingService } from './services/util/loading.service';
 })
 export class AppComponent {
   constructor(private router: Router,
-              private loading: LoadingService) {
+              public loading: LoadingService) {
   }
 
   exibeNavBar() {

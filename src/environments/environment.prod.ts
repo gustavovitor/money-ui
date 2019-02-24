@@ -1,6 +1,16 @@
+const PrimaryWebService = 'https://money-api-gustavovitor.herokuapp.com/';
+
 export const environment = {
   production: true,
 
-  tokenWhitelistedDomains: [/localhost:8080/],
-  tokenBlacklistedRoutes: [/\/oauth\/token/]
+  TokenWhitelistedDomains: [new RegExp('money-api-gustavovitor.herokuapp.com')],
+  TokenBlacklistedRoutes: [new RegExp('/oauth/token')],
+
+  WebServiceList: {
+    URLLancamentos: PrimaryWebService + 'lancamentos',
+    URLCategorias: PrimaryWebService + 'categorias',
+    URLPessoas: PrimaryWebService + 'pessoas',
+    URLAuth: PrimaryWebService + 'oauth/token',
+    URLLogout: PrimaryWebService + 'token/revoke'
+  }
 };

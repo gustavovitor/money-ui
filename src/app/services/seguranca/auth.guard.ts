@@ -18,12 +18,15 @@ export class AuthGuard implements CanActivate {
     if (this.auth.isAccessTokenInvalid()) {
       return this.auth.obterNovoAccessToken()
         .then(() => {
-          if (!this.auth.isAccessTokenInvalid()) {
+          if (this.auth.isAccessTokenInvalid()) {
             this.router.navigate(['/auth']);
             return false;
           }
           return true;
-        }).catch(() => null);
+        }).catch(() => {
+          this.router.navigate(['/auth']);
+          return false;
+        });
     } else if (next.data.roles && this.auth.hasAnyAuthority(next.data.roles)) {
       return true;
     }

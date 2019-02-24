@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
-import { Lancamento } from "../../core/model";
+import { Lancamento } from '../../core/model';
 
-import { MoneyHttp } from "../seguranca/money-http";
+import { MoneyHttp } from '../seguranca/money-http';
+import { environment } from '../../../environments/environment';
 
 export class LancamentoFiltro {
   descricao: string;
@@ -19,7 +20,7 @@ export class LancamentoFiltro {
 })
 export class LancamentoService {
 
-  URL = 'http://localhost:8080/lancamentos';
+  URL = environment.WebServiceList.URLLancamentos;
 
   constructor(private http: MoneyHttp) { }
 
@@ -29,15 +30,15 @@ export class LancamentoService {
     params = params.append('page', filtro.page.toString());
     params = params.append('size', filtro.size.toString());
 
-    if(filtro.descricao){
+    if (filtro.descricao) {
       params = params.append('descricao', filtro.descricao);
     }
 
-    if(filtro.dataVencimentoDe){
+    if (filtro.dataVencimentoDe) {
       params = params.append('dataVencimentoDe', moment(filtro.dataVencimentoDe).format('YYYY-MM-DD'));
     }
 
-    if(filtro.dataVencimentoAte){
+    if (filtro.dataVencimentoAte) {
       params = params.append('dataVencimentoAte', moment(filtro.dataVencimentoAte).format('YYYY-MM-DD'));
     }
 
@@ -78,7 +79,7 @@ export class LancamentoService {
     return this.http.post<Lancamento>(`${this.URL}`, lancamento, { headers }).toPromise();
   }
 
-  excluir(codigo: number): Promise<void>{
+  excluir(codigo: number): Promise<void> {
     return this.http.delete(`${this.URL}/${codigo}`).toPromise().then(() => null );
   }
 }

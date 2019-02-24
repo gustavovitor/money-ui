@@ -11,7 +11,7 @@ import {RouterModule} from '@angular/router';
 import { NotFoundComponent } from './not-found.component';
 import {Title} from '@angular/platform-browser';
 import {LogService} from '../services/util/log.service';
-import {JwtModule} from '@auth0/angular-jwt';
+import { JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt';
 import {environment} from '../../environments/environment';
 import {MoneyHttp} from '../services/seguranca/money-http';
 import { ForbiddenComponent } from './forbidden.component';
@@ -20,8 +20,14 @@ import { ToastModule } from 'primeng/toast';
 /* Necessário registrar a localização nessas versões mais recentes.. */
 registerLocaleData(localePt, 'pt');
 
-export function tokenGetter() {
-  return localStorage.getItem('access_token');
+export function jwtOptionsFactory() {
+  return {
+    tokenGetter: () => {
+      return localStorage.getItem('access_token');
+    },
+    whitelistedDomains: environment.TokenWhitelistedDomains,
+    blacklistedRoutes: environment.TokenBlacklistedRoutes
+  };
 }
 
 @NgModule({
@@ -31,10 +37,9 @@ export function tokenGetter() {
     RouterModule,
 
     JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: environment.tokenWhitelistedDomains,
-        blacklistedRoutes: environment.tokenBlacklistedRoutes
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory
       }
     }),
 

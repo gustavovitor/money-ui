@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Pessoa} from "../../core/model";
-import {MoneyHttp} from "../seguranca/money-http";
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Pessoa} from '../../core/model';
+import {MoneyHttp} from '../seguranca/money-http';
+import { environment } from '../../../environments/environment';
 
 export class PessoaFiltro {
   nome: string;
@@ -14,7 +15,7 @@ export class PessoasDropdown {
   label: string;
   value: number;
 
-  constructor(nome: string, id: number){
+  constructor(nome: string, id: number) {
     this.label = nome;
     this.value = id;
   }
@@ -25,7 +26,7 @@ export class PessoasDropdown {
 })
 export class PessoaService {
 
-  URL = 'http://localhost:8080/pessoas';
+  URL = environment.WebServiceList.URLPessoas;
 
   constructor(private http: MoneyHttp) {}
 
@@ -35,7 +36,7 @@ export class PessoaService {
     params = params.append('page', filtro.page.toString());
     params = params.append('size', filtro.size.toString());
 
-    if(filtro.nome){
+    if (filtro.nome) {
       params = params.append('nome', filtro.nome);
     }
 
@@ -53,15 +54,15 @@ export class PessoaService {
       });
   }
 
-  excluir(codigo: number): Promise<void>{
+  excluir(codigo: number): Promise<void> {
     return this.http.delete(`${this.URL}/${codigo}`).toPromise().then(() => null );
   }
 
-  ativo(pessoa): Promise<void>{
+  ativo(pessoa): Promise<void> {
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/json');
 
-    return this.http.put(`${this.URL}/${pessoa.id}/ativo`, pessoa.ativo,{ headers }).toPromise().then(() => null );
+    return this.http.put(`${this.URL}/${pessoa.id}/ativo`, pessoa.ativo, { headers }).toPromise().then(() => null );
   }
 
   salvar(pessoa: Pessoa): Promise<Pessoa> {
@@ -71,16 +72,16 @@ export class PessoaService {
     return this.http.post<Pessoa>(`${this.URL}`, pessoa, { headers }).toPromise();
   }
 
-  listarTodas(){
+  listarTodas() {
     return this.http.get<any>(`${this.URL}`).toPromise()
       .then(response => {
-        let pessoasDropdown = [];
-        for(const object of response.content){
+        const pessoasDropdown = [];
+        for (const object of response.content) {
           pessoasDropdown.push(new PessoasDropdown(object.nome, object.id));
         }
         const result = { pessoasDropdown, response };
         return result;
-      })
+      });
   }
 
   findById(idPessoa: number): Promise<Pessoa> {
@@ -91,6 +92,6 @@ export class PessoaService {
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/json');
 
-    return this.http.put<Pessoa>(`${this.URL}/${pessoa.id.toString()}`, pessoa,{ headers }).toPromise();
+    return this.http.put<Pessoa>(`${this.URL}/${pessoa.id.toString()}`, pessoa, { headers }).toPromise();
   }
 }

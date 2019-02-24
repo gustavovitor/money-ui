@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Pessoa} from "../../../core/model";
-import {FormControl} from "@angular/forms";
-import {PessoaService} from "../../../services/pessoas/pessoa.service";
-import {ErrorHandlerService} from "../../../core/error-handler.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Title} from "@angular/platform-browser";
+import { Lancamento, Pessoa } from '../../../core/model';
+import {FormControl} from '@angular/forms';
+import {PessoaService} from '../../../services/pessoas/pessoa.service';
+import {ErrorHandlerService} from '../../../core/error-handler.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 import { ToastService } from '../../../services/util/toast.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class PessoasCadastroComponent implements OnInit {
 
     this.atualizarTituloNovo();
 
-    if(idPessoa) {
+    if (idPessoa) {
       this.buscarPessoa(idPessoa);
     }
   }
@@ -55,7 +55,7 @@ export class PessoasCadastroComponent implements OnInit {
   }
 
   salvar(form: FormControl) {
-    if(this.editando){
+    if (this.editando) {
       this.atualizarPessoa(form);
     } else {
       this.adicionarPessoa(form);
@@ -71,7 +71,7 @@ export class PessoasCadastroComponent implements OnInit {
       })
       .catch(err => {
         this.errorHandler.handler(err);
-      })
+      });
   }
 
   atualizarPessoa(form: FormControl) {
@@ -82,11 +82,18 @@ export class PessoasCadastroComponent implements OnInit {
       })
       .catch(err => {
         this.errorHandler.handler(err);
-      })
+      });
   }
 
   novo() {
     this.router.navigate(['/pessoas/novo']);
+  }
+
+  limpar(form: FormControl) {
+    form.reset();
+    setTimeout(function () {
+      this.pessoa = new Pessoa();
+    }.bind(this), 1);
   }
 
 }
