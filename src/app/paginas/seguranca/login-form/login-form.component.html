@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="ui-g">
+    <form ngForm class="ui-g-12 ui-md-4 ui-md-offset-4" #formLogin='ngForm' (ngSubmit)="login()">
+      <div class="ui-g-12">
+        <h1>Login</h1>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Email</label>
+        <input type="email" pInputText name="usuario" [(ngModel)]="user.email" required #email='ngModel'/>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Senha</label>
+        <input type="password" pInputText name="senha" [(ngModel)]="user.senha" required #senha='ngModel'/>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <button type="submit" pButton label="Logar" [disabled]="!formLogin.valid"></button>
+      </div>
+    </form>
+    <div class="ui-g-12">
+    </div>
+  </div>
+</div>

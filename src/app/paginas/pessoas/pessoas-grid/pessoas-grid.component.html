@@ -1,0 +1,31 @@
+<p-table [columns]="cols" [value]="pessoas" [responsive]="true"
+         [paginator]="true"
+         [rows]="paginatorProperties.rows"
+         [lazy]="true"
+         [totalRecords]="paginatorProperties.totalRecords"
+         (onLazyLoad)="executarEvento($event)">
+  <ng-template pTemplate="header">
+    <tr>
+      <th *ngFor="let col of cols" [classList]="col.styleClass">
+        {{col.header}}
+      </th>
+      <th class="col-buttons"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-pessoa>
+    <tr>
+      <td *ngFor="let col of cols" [classList]="col.styleClass">
+        {{col.field != 'ativo' ? col.subfield ? pessoa[col.field][col.subfield] : pessoa[col.field] : '' }}
+        <p-inputSwitch *ngIf="col.field == 'ativo'" [(ngModel)]="pessoa.ativo" [disabled]="!auth.hasAuthority('ROLE_CADASTRAR_PESSOA')"
+                       [pTooltip]="pessoa.ativo ? 'Clique para inativar esta pessoa..' : 'Clique para ativar esta pessoa..'"
+                       tooltipPosition="left" (onChange)="executarAoMudarFlag(pessoa)"></p-inputSwitch>
+      </td>
+      <td class="col-buttons">
+        <button pButton icon="fa fa-pencil" pTooltip="Editar a pessoa.." tooltipPosition="top"
+                (click)="executarAoEditar(pessoa)" [disabled]="!auth.hasAuthority('ROLE_CADASTRAR_PESSOA')"></button>
+        <button pButton icon="fa fa-trash" style="margin-left: 12px;" pTooltip="Excluir a pessoa.." tooltipPosition="top"
+                (click)="executarAoExcluir(pessoa)" [disabled]="!auth.hasAuthority('ROLE_REMOVER_PESSOA')"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

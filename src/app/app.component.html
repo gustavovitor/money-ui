@@ -1,0 +1,15 @@
+<p-progressBar mode="indeterminate" [hidden]="!loading.showLoad" styleClass="progress-bar-custom"></p-progressBar>
+<app-navbar *ngIf="exibeNavBar()"></app-navbar>
+
+<div [@routerTransition]="preparaRota(outlet)">
+  <router-outlet #outlet="outlet"></router-outlet>
+</div>
+
+<p-toast position="bottom-right"></p-toast>
+
+<p-confirmDialog #confirmDialogComponent>
+  <p-footer>
+    <button type="button" pButton icon="fa fa-check" label="Sim" (click)="confirmDialogComponent.accept()"></button>
+    <button type="button" pButton icon="fa fa-times" label="Não" (click)="confirmDialogComponent.reject()"></button>
+  </p-footer>
+</p-confirmDialog>

@@ -1,0 +1,22 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <a href="javascript:;" class="navbar-toggle" (click)="exibindoMenu = !exibindoMenu"><i class="fa fa-bars"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <ul class="navbar-menu" [ngClass]="exibindoMenu ? 'navbar-menu-show' : ''">
+    <li class="navbar-top">{{ auth.jwtPayload?.nome }}</li>
+    <li class="navbar-menu-item" routerLinkActive="ativo" *ngIf="auth.hasAuthority('ROLE_PESQUISAR_LANCAMENTO')">
+      <a (click)="exibindoMenu = false" routerLink="/lancamentos">Lançamentos</a>
+    </li>
+    <li class="navbar-menu-item" routerLinkActive="ativo" *ngIf="auth.hasAuthority('ROLE_PESQUISAR_PESSOA')">
+      <a (click)="exibindoMenu = false" routerLink="/pessoas">Pessoas</a>
+    </li>
+    <li class="navbar-menu-item">
+      <a (click)="exibindoMenu = false; logout.logout()">Logout</a>
+    </li>
+  </ul>
+</nav>

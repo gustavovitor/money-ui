@@ -1,0 +1,26 @@
+.custom-date-width{
+  width: 95px;
+}
+
+.col-valor{
+  width: 120px;
+  text-align: right;
+}
+
+.col-data{
+  width: 120px;
+  text-align: center;
+}
+
+.col-buttons{
+  width: 120px;
+  text-align: center;
+}
+
+::ng-deep .progress-bar-custom {
+  height: 3px !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}

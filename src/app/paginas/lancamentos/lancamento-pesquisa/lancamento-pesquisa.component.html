@@ -1,0 +1,44 @@
+<div class="container">
+  <form autocomplete="off" (ngSubmit)="pesquisar()" class="ui-g">
+    <div class="ui-g-12">
+      <h1>Lançamentos</h1>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Descrição</label>
+      <input type="text" pInputText name="descricao" [(ngModel)]="filtro.descricao"/>
+    </div>
+
+    <div class="ui-g-12">
+      <label style="display: block">Vencimento</label>
+      <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }"
+                  name="dataVencimentoDe" [(ngModel)]="filtro.dataVencimentoDe" showIcon="true">
+      </p-calendar>
+
+      <label style="padding-left: 5px; padding-right: 5px;">até</label>
+      <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }"
+                  name="dataVencimentoAte" [(ngModel)]="filtro.dataVencimentoAte" showIcon="true">
+      </p-calendar>
+
+    </div>
+
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Pesquisar" style="float: right"></button>
+    </div>
+  </form>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <app-lancamentos-grid [lancamentos]="lancamentos" [paginatorProperties]="paginatorProperties"
+                            (aoMudarPagina)="aoMudarPagina($event)"
+                            (aoEditar)="aoEditar($event)"
+                            (aoExcluir)="aoExcluir($event)" #tabela></app-lancamentos-grid>
+    </div>
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <button pButton type="button" routerLink="/lancamentos/novo" label="Novo Lançamento" [disabled]="!auth.hasAuthority('ROLE_CADASTRAR_LANCAMENTO')"></button>
+    </div>
+  </div>
+</div>

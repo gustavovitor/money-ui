@@ -1,0 +1,70 @@
+<div class="container">
+  <form ngForm class="ui-g" (ngSubmit)="salvar(novapessoa)" #novapessoa="ngForm">
+    <div class="ui-g-12">
+      <h1>{{editando ? 'Editar' : 'Nova'}} Pessoa</h1>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Nome</label>
+      <input type="text" pInputText [(ngModel)]="pessoa.nome" #nome="ngModel" name="nome" required minlength="5">
+
+      <app-message text="Uma pessoa não pode ter um nome em branco!" [control]="nome" error="required"></app-message>
+      <app-message text="O nome deve ter no mínimo {{ nome.errors?.minlength?.requiredLength }}, você digitou
+                        {{ nome.errors?.minlength?.actualLength }}." [control]="nome" error="minlength"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-md-9 ui-fluid">
+      <label>Logradouro</label>
+      <input type="text" pInputText [(ngModel)]="pessoa.endereco.logradouro" #logradouro="ngModel" name="logradouro" required>
+
+      <app-message text="Um logradouro não ficar em branco!" [control]="logradouro" error="required"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-md-3 ui-fluid">
+      <label>Número</label>
+      <input type="number" pInputText [(ngModel)]="pessoa.endereco.numero" #numero="ngModel" name="numero" required>
+
+      <app-message text="O número não ficar em branco!" [control]="numero" error="required"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-md-4 ui-fluid">
+      <label>Complemento</label>
+      <input type="text" pInputText [(ngModel)]="pessoa.endereco.complemento" name="complemento">
+    </div>
+
+    <div class="ui-g-12 ui-md-4 ui-fluid">
+      <label>Bairro</label>
+      <input type="text" pInputText [(ngModel)]="pessoa.endereco.bairro" #bairro="ngModel" name="bairro" required>
+
+      <app-message text="O bairro não ficar em branco!" [control]="bairro" error="required"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-md-4 ui-fluid">
+      <label>CEP</label>
+      <p-inputMask mask="99.999-999" [unmask]="true" [autoClear]="false" [(ngModel)]="pessoa.endereco.cep" name="cep" required #cep="ngModel"></p-inputMask>
+
+      <app-message text="O CEP não ficar em branco!" [control]="cep" error="required"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Cidade</label>
+      <input type="text" pInputText [(ngModel)]="pessoa.endereco.cidade" #cidade="ngModel" name="cidade" required>
+
+      <app-message text="A cidade não ficar em branco!" [control]="cidade" error="required"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Estado</label>
+      <input type="text" pInputText [(ngModel)]="pessoa.endereco.estado" #Estado="ngModel" name="estado" required>
+
+      <app-message text="O estado não ficar em branco!" [control]="Estado" error="required"></app-message>
+    </div>
+
+    <div class="ui-g-12">
+      <button type="submit" label="Salvar" pButton [disabled]="!novapessoa.valid"></button>
+      <button type="submit" [label]="editando ? 'Nova' : 'Limpar'" pButton (click)="editando ? novo() : limpar(novolancamento)" class="ui-button-secondary" style="margin-left: 12px;"></button>
+      <a routerLink="/pessoas"><i style="margin-left: 12px;" pTooltip="Voltar para a pesquisa.." tooltipPosition="top" class="fa fa-arrow-left"></i></a>
+    </div>
+
+  </form>
+</div>

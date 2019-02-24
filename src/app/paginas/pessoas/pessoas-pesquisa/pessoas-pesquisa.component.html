@@ -1,0 +1,35 @@
+<div class="container">
+  <form autocomplete="off" (ngSubmit)="pesquisar()" class="ui-g">
+    <div class="ui-g-12">
+      <h1>Pessoas</h1>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Nome</label>
+      <input type="text" pInputText name="nome" [(ngModel)]="filtro.nome"/>
+    </div>
+
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Pesquisar" style="float: right"></button>
+    </div>
+
+  </form>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <app-pessoas-grid [pessoas]="pessoas"
+                        [paginatorProperties]="paginatorProperties"
+                        (aoMudarPagina)="aoMudarPagina($event)"
+                        (aoExcluir)="aoExcluir($event)"
+                        (aoEditar)="aoEditar($event)"
+                        (onChangeStatus)="ativarInativar($event)">
+      </app-pessoas-grid>
+    </div>
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <button pButton type="button" routerLink="/pessoas/novo" label="Nova Pessoa" [disabled]="!auth.hasAuthority('ROLE_CADASTRAR_PESSOA')"></button>
+    </div>
+  </div>
+</div>
