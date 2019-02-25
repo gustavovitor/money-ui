@@ -1,80 +1,78 @@
 <div class="container">
-  <form ngForm class="ui-g" (ngSubmit)="salvar(novolancamento)" #novolancamento="ngForm">
+  <form class="ui-g" (ngSubmit)="salvar()" [formGroup]="formulario">
     <div class="ui-g-12">
       <h1>{{editando ? 'Editando' : 'Novo' }} Lançamento</h1>
     </div>
 
     <div class="ui-g-12">
-      <p-selectButton [options]="tipos" #tipo name="tipo" [(ngModel)]="lancamento.tipo"></p-selectButton>
+      <p-selectButton [options]="tipos" name="tipo" formControlName="tipo"></p-selectButton>
     </div>
 
     <div class="ui-g-6 ui-md-3 ui-fluid">
       <label>Vencimento</label>
       <p-calendar dateFormat="dd/mm/yy"
                   showIcon="true"
-                  [(ngModel)]="lancamento.dataVencimento" name="dtvencimento"
-                  required #dtvencimento="ngModel"></p-calendar>
+                  name="dtvencimento"
+                  formControlName="dataVencimento"></p-calendar>
 
-      <app-message text="A data de vencimento não pode ser vazia!" [control]="dtvencimento" error="required"></app-message>
+      <app-message text="A data de vencimento não pode ser vazia!" [control]="formulario.get('dataVencimento')" error="required"></app-message>
     </div>
 
     <div class="ui-g-6 ui-md-3 ui-fluid">
-      <label>{{ tipo.value === 'RECEITA' ? 'Recebimento' : 'Pagamento' }}</label>
+      <label>{{ formulario.get('tipo').value === 'RECEITA' ? 'Recebimento' : 'Pagamento' }}</label>
       <p-calendar dateFormat="dd/mm/yy"
                   showIcon="true"
-                  [(ngModel)]="lancamento.dataPagamento" name="dtrecebimentopagamento"
-                  required #dtrecebimentopagamento="ngModel"></p-calendar>
+                  name="dtrecebimentopagamento"
+                  formControlName="dataPagamento"></p-calendar>
 
-      <app-message text="A data de {{ tipo.value === 'RECEITA' ? 'Recebimento'.toLowerCase() : 'Pagamento'.toLowerCase() }} não pode ser vazia!" [control]="dtrecebimentopagamento" error="required"></app-message>
+      <app-message text="A data de {{ formulario.get('tipo').value === 'RECEITA' ? 'Recebimento'.toLowerCase() : 'Pagamento'.toLowerCase() }} não pode ser vazia!" [control]="formulario.get('dataPagamento')" error="required"></app-message>
     </div>
 
     <div class="ui-g-12 ui-md-9 ui-fluid">
       <label>Descrição</label>
-      <input pInputText type="text" name="descricao"
-             [(ngModel)]="lancamento.descricao" #descricao="ngModel" required minlength="5" >
+      <input pInputText type="text" name="descricao" formControlName="descricao">
 
-      <app-message text="Descrição não pode ser vazia!" [control]="descricao" error="required"></app-message>
-      <app-message text="A descrição deve ter no mínimo {{ descricao.errors?.minlength?.requiredLength }}, você digitou
-                        {{ descricao.errors?.minlength?.actualLength }}." [control]="descricao" error="minlength"></app-message>
+      <app-message text="Descrição não pode ser vazia!" [control]="formulario.get('descricao')" error="required"></app-message>
+      <app-message text="A descrição deve ter no mínimo {{ formulario.get('descricao').errors?.minlength?.requiredLength }}, você digitou
+                        {{ formulario.get('descricao').errors?.minlength?.actualLength }}." [control]="formulario.get('descricao')" error="minlength"></app-message>
     </div>
 
     <div class="ui-g-12 ui-md-3 ui-fluid">
       <label>Valor</label>
       <input pInputText type="text" placeholder="R$0,00" currencyMask
              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
-             [(ngModel)]="lancamento.valor"
-             name="valor" #valor="ngModel" required>
+             formControlName="valor" name="valor">
 
-      <app-message text="O valor não pode ser vazia!" [control]="valor" error="required"></app-message>
+      <app-message text="O valor não pode ser vazio!" [control]="formulario.get('valor')" error="required"></app-message>
     </div>
 
-    <div class="ui-g-12 ui-md-6 ui-fluid">
+    <div class="ui-g-12 ui-md-6 ui-fluid" formGroupName="categoria">
       <label>Categoria</label>
       <p-dropdown [options]="categorias"
                   [autoWidth]="false"
-                  placeholder="Selecione..." required [(ngModel)]="lancamento.categoria.id" #categoria="ngModel" name="categoria"></p-dropdown>
+                  placeholder="Selecione..." name="categoria" formControlName="id"></p-dropdown>
 
-      <app-message text="É preciso que tenhamos uma categoria!" [control]="categoria" error="required"></app-message>
+      <app-message text="É preciso que tenhamos uma categoria!" [control]="formulario.get('categoria')" error="required"></app-message>
     </div>
 
-    <div class="ui-g-12 ui-md-6 ui-fluid">
+    <div class="ui-g-12 ui-md-6 ui-fluid" formGroupName="pessoa">
       <label>Pessoa</label>
       <p-dropdown [options]="pessoas"
                   [autoWidth]="false"
                   [filter]="true"
-                  placeholder="Selecione..." required [(ngModel)]="lancamento.pessoa.id" #pessoa="ngModel" name="pessoa"></p-dropdown>
+                  placeholder="Selecione..." formControlName="id" name="pessoa"></p-dropdown>
 
-      <app-message text="É preciso que tenhamos uma pessoa!" [control]="pessoa" error="required"></app-message>
+      <app-message text="É preciso que tenhamos uma pessoa!" [control]="formulario.get('pessoa')" error="required"></app-message>
     </div>
 
     <div class="ui-g-12 ui-fluid">
       <label>Observação</label>
-      <textarea pInputTextarea rows="3" name="observacao" [(ngModel)]="lancamento.observacao"></textarea>
+      <textarea pInputTextarea rows="3" name="observacao" formControlName="observacao"></textarea>
     </div>
 
     <div class="ui-g-12">
-      <button type="submit" label="Salvar" pButton [disabled]="!novolancamento.valid"></button>
-      <button type="button" [label]="editando ? 'Novo' : 'Limpar'" pButton (click)="editando ? novo() : limpar(novolancamento)" class="ui-button-secondary" style="margin-left: 12px;"></button>
+      <button type="submit" label="Salvar" pButton [disabled]="formulario.invalid"></button>
+      <button type="button" [label]="editando ? 'Novo' : 'Limpar'" pButton (click)="editando ? novo() : limpar()" class="ui-button-secondary" style="margin-left: 12px;"></button>
       <a routerLink="/lancamentos"><i style="margin-left: 12px;" pTooltip="Voltar para a pesquisa.." tooltipPosition="top" class="fa fa-arrow-left"></i></a>
     </div>
   </form>

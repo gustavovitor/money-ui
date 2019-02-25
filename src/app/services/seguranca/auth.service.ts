@@ -30,7 +30,6 @@ export class AuthService {
     return this.http.post<any>(this.URL, body, { headers, withCredentials: true }).toPromise()
       .then(res => {
         this.loading.dismiss();
-        console.log(res);
         this.armazenarToken(res.access_token);
       })
       .catch(err => {

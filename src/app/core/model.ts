@@ -31,13 +31,15 @@ export class Lancamento {
   categoria = new Categoria();
 
   constructor();
-  constructor(id: number, tipo: string, descricao: string, dataVencimento: Date, dataPagamento: Date, valor: number, observacao: string, pessoa: Pessoa, categoria: Categoria);
-  constructor(id?: number, tipo?: string, descricao?: string, dataVencimento?: Date, dataPagamento?: Date, valor?: number, observacao?: string, pessoa?: Pessoa, categoria?: Categoria) {
+  constructor(id: number, tipo: string, descricao: string, dataVencimento: Date,
+              dataPagamento: Date, valor: number, observacao: string, pessoa: Pessoa, categoria: Categoria);
+  constructor(id?: number, tipo?: string, descricao?: string, dataVencimento?: Date,
+              dataPagamento?: Date, valor?: number, observacao?: string, pessoa?: Pessoa, categoria?: Categoria) {
     this.id = id;
     this.tipo = tipo ? tipo : 'RECEITA';
     this.descricao = descricao;
-    this.dataVencimento = dataVencimento;
-    this.dataPagamento = dataPagamento;
+    this.dataVencimento = dataVencimento ? new Date(dataVencimento.toString().replace(/-/g, '\/')) : null;
+    this.dataPagamento = dataPagamento ? new Date(dataPagamento.toString().replace(/-/g, '\/')) : null;
     this.valor = valor;
     this.observacao = observacao;
     this.pessoa = pessoa ? pessoa : new Pessoa();

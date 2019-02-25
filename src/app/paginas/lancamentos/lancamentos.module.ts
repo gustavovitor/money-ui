@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LancamentoCadastroComponent } from "./lancamentos-cadastro/lancamento-cadastro.component";
-import { LancamentoPesquisaComponent } from "./lancamento-pesquisa/lancamento-pesquisa.component";
-import { LancamentosGridComponent } from "./lancamentos-grid/lancamentos-grid.component";
-import { FormsModule } from "@angular/forms";
+import { LancamentoCadastroComponent } from './lancamentos-cadastro/lancamento-cadastro.component';
+import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pesquisa.component';
+import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ButtonModule, CalendarModule,
   DataTableModule,
@@ -11,12 +11,12 @@ import {
   InputTextModule,
   SelectButtonModule,
   TooltipModule
-} from "primeng/primeng";
-import {TableModule} from "primeng/table";
-import {CurrencyMaskModule} from "ng2-currency-mask";
-import {SharedModule} from "../../shared/shared.module";
-import { HttpClientModule } from "@angular/common/http";
-import {LancamentosRoutingModule} from "./lancamentos-routing.module";
+} from 'primeng/primeng';
+import {TableModule} from 'primeng/table';
+import {CurrencyMaskModule} from 'ng2-currency-mask';
+import {SharedModule} from '../../shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
+import {LancamentosRoutingModule} from './lancamentos-routing.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +29,7 @@ import {LancamentosRoutingModule} from "./lancamentos-routing.module";
     HttpClientModule,
 
     FormsModule,
+    ReactiveFormsModule,
     InputTextModule,
     ButtonModule,
     DataTableModule,

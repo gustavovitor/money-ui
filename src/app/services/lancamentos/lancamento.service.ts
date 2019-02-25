@@ -59,7 +59,7 @@ export class LancamentoService {
     return this.http.get<Lancamento>(`${this.URL}/${id}`).toPromise()
       .then(response => {
         const lancamento = new Lancamento(response.id, response.tipo, response.descricao,
-                                        new Date(response.dataVencimento), new Date(response.dataPagamento),
+                                        response.dataVencimento, response.dataPagamento,
                                         response.valor, response.observacao, response.pessoa, response.categoria);
         return lancamento;
       });
@@ -68,7 +68,6 @@ export class LancamentoService {
   atualizar(lancamento: Lancamento): Promise<any> {
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/json');
-
     return this.http.put<Lancamento>(`${this.URL}/${lancamento.id}`, lancamento, { headers }).toPromise();
   }
 

@@ -1,4 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class LogService {
@@ -8,6 +9,9 @@ export class LogService {
   ) {}
 
   msg(msg: string) {
+    if (environment.production) {
+      return;
+    }
     console.log(`${this.prefix}: ${msg}`);
   }
 }

@@ -45,8 +45,6 @@ export class MoneyHttp extends HttpClient {
   private fazerRequisicao<T>(func: Function): Observable<T> {
     this.loading.show();
     if (this.auth.isAccessTokenInvalid()) {
-      console.log('Requisição com chave inválida, obtendo uma nova chave.');
-
       const chamadaNovoAccessToken = this.auth.obterNovoAccessToken()
         .then(() => {
           if (this.auth.isAccessTokenInvalid()) {
