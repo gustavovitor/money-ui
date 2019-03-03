@@ -1,68 +1,70 @@
 <div class="container">
-  <form ngForm class="ui-g" (ngSubmit)="salvar(novapessoa)" #novapessoa="ngForm">
+  <form class="ui-g" (ngSubmit)="salvar()" [formGroup]="formulario">
     <div class="ui-g-12">
       <h1>{{editando ? 'Editar' : 'Nova'}} Pessoa</h1>
     </div>
 
     <div class="ui-g-12 ui-fluid">
       <label>Nome</label>
-      <input type="text" pInputText [(ngModel)]="pessoa.nome" #nome="ngModel" name="nome" required minlength="5">
+      <input type="text" pInputText name="nome" formControlName="nome">
 
-      <app-message text="Uma pessoa não pode ter um nome em branco!" [control]="nome" error="required"></app-message>
-      <app-message text="O nome deve ter no mínimo {{ nome.errors?.minlength?.requiredLength }}, você digitou
-                        {{ nome.errors?.minlength?.actualLength }}." [control]="nome" error="minlength"></app-message>
+      <app-message text="Uma pessoa não pode ter um nome em branco!" [control]="formulario.get('nome')" error="required"></app-message>
+      <app-message text="O nome deve ter no mínimo {{ formulario.get('nome').errors?.minlength?.requiredLength }}, você digitou
+                        {{ formulario.get('nome').errors?.minlength?.actualLength }}." [control]="formulario.get('nome')" error="minlength"></app-message>
+      <app-message text="O nome deve ter no máximo {{ formulario.get('nome').errors?.maxlength?.requiredLength }}, você digitou
+                        {{ formulario.get('nome').errors?.maxlength?.actualLength }}." [control]="formulario.get('nome')" error="maxlength"></app-message>
     </div>
 
-    <div class="ui-g-12 ui-md-9 ui-fluid">
+    <div class="ui-g-12 ui-md-9 ui-fluid" formGroupName="endereco">
       <label>Logradouro</label>
-      <input type="text" pInputText [(ngModel)]="pessoa.endereco.logradouro" #logradouro="ngModel" name="logradouro" required>
+      <input type="text" pInputText formControlName="logradouro" name="logradouro">
 
-      <app-message text="Um logradouro não ficar em branco!" [control]="logradouro" error="required"></app-message>
+      <app-message text="O logradouro não ficar em branco!" [control]="formulario.get('endereco').get('logradouro')" error="required"></app-message>
     </div>
 
-    <div class="ui-g-12 ui-md-3 ui-fluid">
+    <div class="ui-g-12 ui-md-3 ui-fluid" formGroupName="endereco">
       <label>Número</label>
-      <input type="number" pInputText [(ngModel)]="pessoa.endereco.numero" #numero="ngModel" name="numero" required>
+      <input type="number" pInputText formControlName="numero" name="numero">
 
-      <app-message text="O número não ficar em branco!" [control]="numero" error="required"></app-message>
+      <app-message text="O número não ficar em branco!" [control]="formulario.get('endereco').get('numero')" error="required"></app-message>
     </div>
 
-    <div class="ui-g-12 ui-md-4 ui-fluid">
+    <div class="ui-g-12 ui-md-4 ui-fluid" formGroupName="endereco">
       <label>Complemento</label>
-      <input type="text" pInputText [(ngModel)]="pessoa.endereco.complemento" name="complemento">
+      <input type="text" pInputText formControlName="complemento" name="complemento">
     </div>
 
-    <div class="ui-g-12 ui-md-4 ui-fluid">
+    <div class="ui-g-12 ui-md-4 ui-fluid" formGroupName="endereco">
       <label>Bairro</label>
-      <input type="text" pInputText [(ngModel)]="pessoa.endereco.bairro" #bairro="ngModel" name="bairro" required>
+      <input type="text" pInputText formControlName="bairro" name="bairro">
 
-      <app-message text="O bairro não ficar em branco!" [control]="bairro" error="required"></app-message>
+      <app-message text="O bairro não ficar em branco!" [control]="formulario.get('endereco').get('bairro')" error="required"></app-message>
     </div>
 
-    <div class="ui-g-12 ui-md-4 ui-fluid">
+    <div class="ui-g-12 ui-md-4 ui-fluid" formGroupName="endereco">
       <label>CEP</label>
-      <p-inputMask mask="99.999-999" [unmask]="true" [autoClear]="false" [(ngModel)]="pessoa.endereco.cep" name="cep" required #cep="ngModel"></p-inputMask>
+      <p-inputMask mask="99.999-999" [unmask]="true" [autoClear]="false" formControlName="cep" name="cep"></p-inputMask>
 
-      <app-message text="O CEP não ficar em branco!" [control]="cep" error="required"></app-message>
+      <app-message text="O CEP não ficar em branco!" [control]="formulario.get('endereco').get('cep')" error="required"></app-message>
     </div>
 
-    <div class="ui-g-12 ui-md-6 ui-fluid">
+    <div class="ui-g-12 ui-md-6 ui-fluid" formGroupName="endereco">
       <label>Cidade</label>
-      <input type="text" pInputText [(ngModel)]="pessoa.endereco.cidade" #cidade="ngModel" name="cidade" required>
+      <input type="text" pInputText formControlName="cidade" name="cidade">
 
-      <app-message text="A cidade não ficar em branco!" [control]="cidade" error="required"></app-message>
+      <app-message text="A cidade não ficar em branco!" [control]="formulario.get('endereco').get('cidade')" error="required"></app-message>
     </div>
 
-    <div class="ui-g-12 ui-md-6 ui-fluid">
+    <div class="ui-g-12 ui-md-6 ui-fluid" formGroupName="endereco">
       <label>Estado</label>
-      <input type="text" pInputText [(ngModel)]="pessoa.endereco.estado" #Estado="ngModel" name="estado" required>
+      <input type="text" pInputText formControlName="estado" name="estado">
 
-      <app-message text="O estado não ficar em branco!" [control]="Estado" error="required"></app-message>
+      <app-message text="O estado não ficar em branco!" [control]="formulario.get('endereco').get('estado')" error="required"></app-message>
     </div>
 
     <div class="ui-g-12">
-      <button type="submit" label="Salvar" pButton [disabled]="!novapessoa.valid"></button>
-      <button type="submit" [label]="editando ? 'Nova' : 'Limpar'" pButton (click)="editando ? novo() : limpar(novapessoa)" class="ui-button-secondary" style="margin-left: 12px;"></button>
+      <button type="submit" label="Salvar" pButton [disabled]="!formulario.valid"></button>
+      <button type="button" [label]="editando ? 'Nova' : 'Limpar'" pButton (click)="editando ? novo() : limpar()" class="ui-button-secondary" style="margin-left: 12px;"></button>
       <a routerLink="/pessoas"><i style="margin-left: 12px;" pTooltip="Voltar para a pesquisa.." tooltipPosition="top" class="fa fa-arrow-left"></i></a>
     </div>
 

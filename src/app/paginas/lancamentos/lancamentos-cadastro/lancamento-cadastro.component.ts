@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriaService } from '../../../services/categorias/categoria.service';
 import { PessoaService } from '../../../services/pessoas/pessoa.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {LancamentoService} from '../../../services/lancamentos/lancamento.service';
 import {ErrorHandlerService} from '../../../core/error-handler.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -23,6 +23,8 @@ export class LancamentoCadastroComponent implements OnInit {
   categorias = [];
   pessoas = [];
   formulario: FormGroup;
+
+  qtdMesesReplica = 1;
 
   dataVencimento: Date;
   dataPagamento: Date;
@@ -61,17 +63,27 @@ export class LancamentoCadastroComponent implements OnInit {
       tipo: ['RECEITA', Validators.required],
       dataVencimento: [null, Validators.required],
       dataPagamento: [null],
-      descricao: [null, [Validators.required, Validators.minLength(5)]],
+      descricao: [null, [this.validadarObrigatoriedade, this.validarTamanhoMinimo(5)]],
       valor: [null, Validators.required],
       pessoa: this.formBuilder.group({
-        id: [null, Validators.required],
-        nome: []
+        id: [null, Validators.required]
       }),
       categoria: this.formBuilder.group({
         id: [null, Validators.required]
       }),
       observacao: []
     });
+  }
+
+  validadarObrigatoriedade(input: FormControl) {
+    return (input.value ? null : { obrigatoriedade: true });
+  }
+
+  validarTamanhoMinimo(size: number) {
+    return (input: FormControl) => {
+      return (!input.value || input.value.length >= size) ? null :
+        { tamanhoMinimo: { requiredLength: size, actualLength: input.value.lengthx } };
+    };
   }
 
   carregarLancamento(idLancamento: number) {
@@ -103,7 +115,7 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   adicionarLancamento() {
-    this.lancamentoService.salvar(this.formulario.value)
+    this.lancamentoService.salvar(this.formulario.value, this.qtdMesesReplica)
       .then(() => {
         this.toasty.success('Lançamento cadastrado com sucesso!');
         this.router.navigate(['/lancamentos']);

@@ -27,7 +27,7 @@ export class ErrorHandlerService {
       }
 
       try {
-        msg = err[0].message;
+        msg = err.error[0].message;
       } catch (e) { }
     } else {
       msg = 'Erro ao processar o serviço remoto.';

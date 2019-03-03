@@ -29,10 +29,12 @@
 
   <div class="ui-g">
     <div class="ui-g-12">
-      <app-lancamentos-grid [lancamentos]="lancamentos" [paginatorProperties]="paginatorProperties"
-                            (aoMudarPagina)="aoMudarPagina($event)"
-                            (aoEditar)="aoEditar($event)"
-                            (aoExcluir)="aoExcluir($event)" #tabela></app-lancamentos-grid>
+      <app-grid [cols]="cols"
+                [paginatorProperties]="paginatorProperties"
+                [data]="lancamentos"
+                [actions]="actions"
+                (pageChange)="aoMudarPagina($event)"
+                (userAction)="filtrarEventos($event)"></app-grid>
     </div>
   </div>
 

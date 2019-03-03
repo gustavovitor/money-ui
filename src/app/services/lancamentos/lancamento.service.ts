@@ -71,11 +71,18 @@ export class LancamentoService {
     return this.http.put<Lancamento>(`${this.URL}/${lancamento.id}`, lancamento, { headers }).toPromise();
   }
 
-  salvar(lancamento: Lancamento): Promise<Lancamento> {
+  salvar(lancamento: Lancamento, qtdMesesReplica = 1): Promise<Lancamento> {
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/json');
 
-    return this.http.post<Lancamento>(`${this.URL}`, lancamento, { headers }).toPromise();
+    if (qtdMesesReplica < 1) {
+      qtdMesesReplica = 1;
+    }
+
+    let params = new HttpParams();
+    params = params.append('qtdMesesReplica', qtdMesesReplica.toString());
+
+    return this.http.post<Lancamento>(`${this.URL}`, lancamento, { headers, params }).toPromise();
   }
 
   excluir(codigo: number): Promise<void> {

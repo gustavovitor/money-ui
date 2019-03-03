@@ -23,18 +23,25 @@
       <p-calendar dateFormat="dd/mm/yy"
                   showIcon="true"
                   name="dtrecebimentopagamento"
+                  (ngModelChange)="qtdMesesReplica = 1"
                   formControlName="dataPagamento"></p-calendar>
 
       <app-message text="A data de {{ formulario.get('tipo').value === 'RECEITA' ? 'Recebimento'.toLowerCase() : 'Pagamento'.toLowerCase() }} não pode ser vazia!" [control]="formulario.get('dataPagamento')" error="required"></app-message>
+    </div>
+
+    <div class="ui-sm-12 ui-md-3 ui-fluid">
+      <label>Replicar o Lançamento</label>
+      <input pInputText type="number" name="qtdMesesReplica" [ngModelOptions]="{ standalone: true }" [(ngModel)]="qtdMesesReplica"
+             [disabled]="formulario.get('dataPagamento').value"/>
     </div>
 
     <div class="ui-g-12 ui-md-9 ui-fluid">
       <label>Descrição</label>
       <input pInputText type="text" name="descricao" formControlName="descricao">
 
-      <app-message text="Descrição não pode ser vazia!" [control]="formulario.get('descricao')" error="required"></app-message>
-      <app-message text="A descrição deve ter no mínimo {{ formulario.get('descricao').errors?.minlength?.requiredLength }}, você digitou
-                        {{ formulario.get('descricao').errors?.minlength?.actualLength }}." [control]="formulario.get('descricao')" error="minlength"></app-message>
+      <app-message text="Descrição não pode ser vazia!" [control]="formulario.get('descricao')" error="obrigatoriedade"></app-message>
+      <app-message text="A descrição deve ter no mínimo {{ formulario.get('descricao').errors?.tamanhoMinimo?.requiredLength }}, você digitou
+                        {{ formulario.get('descricao').errors?.tamanhoMinimo?.actualLength }}." [control]="formulario.get('descricao')" error="tamanhoMinimo"></app-message>
     </div>
 
     <div class="ui-g-12 ui-md-3 ui-fluid">

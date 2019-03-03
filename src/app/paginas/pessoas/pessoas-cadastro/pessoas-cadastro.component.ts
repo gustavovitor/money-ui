@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Lancamento, Pessoa } from '../../../core/model';
-import {FormControl} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {PessoaService} from '../../../services/pessoas/pessoa.service';
 import {ErrorHandlerService} from '../../../core/error-handler.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -19,11 +19,13 @@ export class PessoasCadastroComponent implements OnInit {
               private errorHandler: ErrorHandlerService,
               private router: Router,
               private route: ActivatedRoute,
-              private title: Title) { }
+              private title: Title,
+              private formBuilder: FormBuilder) { }
 
-  pessoa = new Pessoa();
+  formulario: FormGroup;
 
   ngOnInit() {
+    this.configurarFormulario();
     const idPessoa = this.route.snapshot.params['id'];
 
     this.atualizarTituloNovo();
@@ -34,11 +36,30 @@ export class PessoasCadastroComponent implements OnInit {
   }
 
   get editando() {
-    return Boolean(this.pessoa.id);
+    return Boolean(this.formulario.get('id').value);
+  }
+
+  configurarFormulario() {
+    this.formulario = this.formBuilder.group({
+      id: [null],
+      nome: [null, Validators.compose([
+        Validators.required, Validators.minLength(5), Validators.maxLength(60)
+      ])],
+      ativo: [true],
+      endereco: this.formBuilder.group( {
+        logradouro: [null, Validators.maxLength(120)],
+        numero: [null, Validators.maxLength(32)],
+        complemento: [null, Validators.maxLength(32)],
+        bairro: [null, Validators.maxLength(60)],
+        cep: [null, Validators.maxLength(30)],
+        cidade: [null, Validators.maxLength(80)],
+        estado: [null, Validators.maxLength(80)]
+      })
+    });
   }
 
   atualizarTituloEditando() {
-    this.title.setTitle(`Editando a pessoa: ${this.pessoa.nome}`);
+    this.title.setTitle(`Editando a pessoa: ${this.formulario.get('nome')}`);
   }
 
   atualizarTituloNovo() {
@@ -48,23 +69,22 @@ export class PessoasCadastroComponent implements OnInit {
   buscarPessoa(idPessoa: number) {
     this.pessoaService.findById(idPessoa)
       .then(pessoa => {
-        this.pessoa = pessoa;
+        this.formulario.patchValue(pessoa);
         this.atualizarTituloEditando();
       })
       .catch(err => this.errorHandler.handler(err));
   }
 
-  salvar(form: FormControl) {
+  salvar() {
     if (this.editando) {
-      this.atualizarPessoa(form);
+      this.atualizarPessoa();
     } else {
-      this.adicionarPessoa(form);
+      this.adicionarPessoa();
     }
   }
 
-  adicionarPessoa(form: FormControl) {
-    this.pessoa.ativo = true;
-    this.pessoaService.salvar(this.pessoa)
+  adicionarPessoa() {
+    this.pessoaService.salvar(this.formulario.value)
       .then(() => {
         this.toasty.success('Pessoa cadastrada com sucesso!');
         this.router.navigate(['/pessoas']);
@@ -74,8 +94,8 @@ export class PessoasCadastroComponent implements OnInit {
       });
   }
 
-  atualizarPessoa(form: FormControl) {
-    this.pessoaService.atualizar(this.pessoa)
+  atualizarPessoa() {
+    this.pessoaService.atualizar(this.formulario.value)
       .then(() => {
         this.toasty.success('Pessoa atualizada com sucesso!');
         this.router.navigate(['/pessoas']);
@@ -89,11 +109,8 @@ export class PessoasCadastroComponent implements OnInit {
     this.router.navigate(['/pessoas/novo']);
   }
 
-  limpar(form: FormControl) {
-    form.reset();
-    setTimeout(function () {
-      this.pessoa = new Pessoa();
-    }.bind(this), 1);
+  limpar() {
+    this.formulario.reset();
   }
 
 }

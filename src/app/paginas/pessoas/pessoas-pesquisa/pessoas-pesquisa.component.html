@@ -17,13 +17,12 @@
 
   <div class="ui-g">
     <div class="ui-g-12">
-      <app-pessoas-grid [pessoas]="pessoas"
-                        [paginatorProperties]="paginatorProperties"
-                        (aoMudarPagina)="aoMudarPagina($event)"
-                        (aoExcluir)="aoExcluir($event)"
-                        (aoEditar)="aoEditar($event)"
-                        (onChangeStatus)="ativarInativar($event)">
-      </app-pessoas-grid>
+      <app-grid [cols]="cols"
+                [paginatorProperties]="paginatorProperties"
+                [actions]="actions"
+                [data]="pessoas"
+                (userAction)="filtrarEventos($event)"
+                (pageChange)="aoMudarPagina($event)"></app-grid>
     </div>
   </div>
 
